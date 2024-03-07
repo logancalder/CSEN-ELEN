@@ -1,0 +1,20 @@
+// Logan Calder, COEN12L R 9:15, 6/11/2023
+// Worst-Case Runtime & Explanation For App1
+
+createSet O(1)
+addElement O(n)
+search O(n)
+removeAge O(n)
+maxAgeGap O(n)
+destroySet O(1)
+
+I chose a 2D array for this application given that memory efficiency was not being
+considered for this assignment, but rather runtime. Given that a 2D array and hash
+chaining would have the same worst-case runtime, I chose a 2D array as I believed it
+to be more simple to implement.
+
+This was a good choice (compared to, say, a hash table or tree) as we are searching
+by age (which is not unique to a student). Due to this, many results will be found.
+Regardless of our implementation, it will still take O(n) iterations to find and 
+perform an operation on every student of an age, which permits the usage of hash
+chaining or a 2D array. Using sequential search, I accomplish this task.

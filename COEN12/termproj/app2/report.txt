@@ -1,0 +1,16 @@
+// Logan Calder, COEN12L R 9:15, 6/11/2023
+// Worst-Case Runtime & Explanation For App2
+
+createSet O(n)
+hash O(1)
+addElement O(n)
+search O(n)
+removeID O(n)
+destroySet O(1)
+
+I chose a hash table for app2 given that we were searching by ID (which is unique),
+and we know the maximum students. Given this, we can choose a prime # to serve as our
+hash table size, and then through linear probing may find students given an ID.
+
+Hash tables have good potential for fast search operations, and given the little
+removal of students, this was a good option (opposed to linked list).

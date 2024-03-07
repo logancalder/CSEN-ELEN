@@ -1,0 +1,7 @@
+Half word address = X…XX1 penalty: nothing listed, 513?
+Full word address = X…X01 penalty: 896
+Full word address = X…X10 penalty: 640
+Full word address = X…X11 penalty: 896
+Address dependency penalty: 400
+Data dependency penalty: 401
+Maximum VDIV/VSQRT overlap: 15
