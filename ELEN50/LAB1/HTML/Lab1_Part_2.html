@@ -6,11 +6,11 @@
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
       -->
-<title>Lab1_Part_7</title>
+<title>Lab1_Part_2</title>
 <meta name="generator" content="MATLAB 24.1">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
 <meta name="DC.date" content="2024-04-09">
-<meta name="DC.source" content="Lab1_Part_7.m">
+<meta name="DC.source" content="Lab1_Part_2.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
@@ -80,63 +80,37 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <div>
 <ul>
 <li>
-<a href="#2">Entering Variables for Known Variables</a>
+<a href="#1">Header</a>
 </li>
 <li>
-<a href="#3">Define Unknown Symbolic Variables</a>
-</li>
-<li>
-<a href="#4">Equations</a>
-</li>
-<li>
-<a href="#5">Enter Equations &amp; Variables</a>
-</li>
-<li>
-<a href="#6">Turning Equations to Matrix</a>
-</li>
-<li>
-<a href="#7">Solving For V</a>
+<a href="#2">Cosine of a value in even steps</a>
 </li>
 </ul>
 </div>
+<h2 id="1">Header</h2>
 <pre class="codeinput">
 <span class="comment">% Name: Logan Calder</span>
 <span class="comment">% Lab Number: 1</span>
 <span class="comment">% Class: ECEN 50L</span>
 <span class="comment">% Date: 4/9/24</span>
 <span class="comment">% Section time: 14:00T</span>
+</pre>
+<h2 id="2">Cosine of a value in even steps</h2>
+<pre class="codeinput">a=pi*0.1*[0:19];
+disp(cos(a)); <span class="comment">% Displays the cos of a in even steps of 0.1pi * i, where i is 0:19.</span>
+</pre>
+<pre class="codeoutput">  Columns 1 through 7
 
-clear <span class="string">all</span>;
-close <span class="string">all</span>;
-</pre>
-<h2 id="2">Entering Variables for Known Variables</h2>
-<pre class="codeinput">Vs1 = 6;
-Vs2 = 12;
-Is1 = 2e-3;
-<span class="keyword">...</span>
-R1 = 1e3;
-</pre>
-<h2 id="3">Define Unknown Symbolic Variables</h2>
-<pre class="codeinput">syms <span class="string">Va</span> <span class="string">Vb</span> <span class="string">Vc</span> <span class="string">Vd</span>;
-</pre>
-<h2 id="4">Equations</h2>
-<pre class="codeinput">eq1 = (Va-Vb)/R1 - Is1 + (Va-Vd)/R2 - Is3 == 0;
-<span class="keyword">...</span>
-</pre>
-<pre class="codeoutput error">Unrecognized function or variable 'R2'.
+    1.0000    0.9511    0.8090    0.5878    0.3090    0.0000   -0.3090
 
-Error in Lab1_Part_7 (line 24)
-eq1 = (Va-Vb)/R1 - Is1 + (Va-Vd)/R2 - Is3 == 0;
-</pre>
-<h2 id="5">Enter Equations &amp; Variables</h2>
-<pre class="codeinput">eqns = [eq1, eq2, eq3, eq4];
-vars = [Va, Vb, Vc, Vd];
-</pre>
-<h2 id="6">Turning Equations to Matrix</h2>
-<pre class="codeinput">[C, S] = equationsToMatrix(eqns, vars);
-</pre>
-<h2 id="7">Solving For V</h2>
-<pre class="codeinput">V = inv(C) * S;
+  Columns 8 through 14
+
+   -0.5878   -0.8090   -0.9511   -1.0000   -0.9511   -0.8090   -0.5878
+
+  Columns 15 through 20
+
+   -0.3090   -0.0000    0.3090    0.5878    0.8090    0.9511
+
 </pre>
 <p class="footer">
 <br>
@@ -146,44 +120,18 @@ vars = [Va, Vb, Vc, Vd];
 </div>
 <!--
 ##### SOURCE BEGIN #####
+%% Header
+
 % Name: Logan Calder
 % Lab Number: 1
 % Class: ECEN 50L
 % Date: 4/9/24
 % Section time: 14:00T
 
-clear all;
-close all;
+%% Cosine of a value in even steps
 
-%% Entering Variables for Known Variables
-
-Vs1 = 6;
-Vs2 = 12;
-Is1 = 2e-3;
-...
-R1 = 1e3;
-
-%% Define Unknown Symbolic Variables
-
-syms Va Vb Vc Vd;
-
-%% Equations
-
-eq1 = (Va-Vb)/R1 - Is1 + (Va-Vd)/R2 - Is3 == 0;
-...
-    
-%% Enter Equations & Variables
-eqns = [eq1, eq2, eq3, eq4];
-vars = [Va, Vb, Vc, Vd];
-
-%% Turning Equations to Matrix
-
-[C, S] = equationsToMatrix(eqns, vars);
-
-%% Solving For V
-
-V = inv(C) * S;
-
+a=pi*0.1*[0:19];
+disp(cos(a)); % Displays the cos of a in even steps of 0.1pi * i, where i is 0:19.
 
 ##### SOURCE END #####
 -->
