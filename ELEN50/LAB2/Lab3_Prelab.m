@@ -1,57 +1,45 @@
-%% Prelab 2
+%% Prelab 3
 
 % Name: Logan Calder
 % Lab Number: 2
 % Class: ECEN 50L
-% Date: 4/16/24
+% Date: 4/23/24
 % Section time: 14:15T
 
 %% Part 1 - Solving For Resistors in Series
 
-Vs = 10;
-
-R1 = 987;
-R2 = 1990;
-R3 = 2971;
-R4 = 4637;
-R5 = 7372;
-R6 = 9043;
-
-Rt = (R5+R6);
-Rt = (Rt * R4)/(Rt+R4);
-Rt = Rt + R3;
-Rt = (Rt * R2)/(Rt+R2);
-Rt = R1 + Rt
+Vs = 5;
+Rs = 10e4;
+Rvm = 10e5;
+R1 = [15e3;20e3;30e3;56e3;100e3];
 
 % V = IR so I = V/R
 
-Rt = R1+R2; % They are in series so add
+Rt = R1+Rs; % They are in series so add
 
-I1 = Vs/(R1+R2)
-V1 = I1*R1
-V2 = I1*R2
+Irs = Vs/(R1+Rs)
+Vrs = Irs*Rs
+V1 = Irs*R1
 
 %% Part 2 - Solving For Complex Circuit
 
-syms I1 I2 V1 V2 V3 I3;
+syms Irs I1 Irvm Vrs V1 Vrvm;
 
-R23 = (R2+R3)/(R2*R3);
-
-eq1 = I1 == V1/R1;
-eq2 = I1 - I2 - I3 == 0;
-eq3 = Vs-V1-V2 == 0;
-eq4 = V3 == V2;
-eq5 = I2 == V2/R2;
-eq6 = I3 == V3/R3;
+eq1 = Irs == Vrs/Rs;
+eq2 = Irs - I1 - Irvm == 0;
+eq3 = Vs-Vrs-V1 == 0;
+eq4 = V1 == Vrvm;
+eq5 = I1 == V1/R1;
+eq6 = Irvm == Vrvm/Rvm;
 
 
 eqns = [eq1, eq2, eq3, eq4, eq5, eq6];
 
-vars = [I1,I2,I3,V1,V2,V3];
+vars = [Irs, I1, Irvm, Vrs, V1, Vrvm];
 
 [C, S] = equationsToMatrix(eqns, vars);
 V = inv(C) * S;
-Vdouble = double(V);
+Vdouble = double(V)
 
 %% Part 3 - Kirchhoff Laws
 

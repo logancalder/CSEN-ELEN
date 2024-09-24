@@ -1,0 +1,384 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>Lab2_Prelab</title>
+<meta name="generator" content="MATLAB 24.1">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2024-04-16">
+<meta name="DC.source" content="Lab2_Prelab.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Prelab 2</a>
+</li>
+<li>
+<a href="#2">Part 1 - Solving For Resistors in Series</a>
+</li>
+<li>
+<a href="#3">Part 2 - Solving For Complex Circuit</a>
+</li>
+<li>
+<a href="#4">Part 3 - Kirchhoff Laws</a>
+</li>
+<li>
+<a href="#5">Part 4 - Nominal Value of Resistors</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Prelab 2</h2>
+<pre class="codeinput">
+<span class="comment">% Name: Logan Calder</span>
+<span class="comment">% Lab Number: 2</span>
+<span class="comment">% Class: ECEN 50L</span>
+<span class="comment">% Date: 4/16/24</span>
+<span class="comment">% Section time: 14:15T</span>
+</pre>
+<h2 id="2">Part 1 - Solving For Resistors in Series</h2>
+<pre class="codeinput">Vs = 10;
+
+R1 = 987;
+R2 = 199;
+R3 = 3000;
+R4 = 4700;
+R5 = 7500;
+R6 = 9100;
+
+<span class="comment">% V = IR so I = V/R</span>
+
+Rt = R1+R2; <span class="comment">% They are in series so add</span>
+
+I1 = Vs/(R1+R2)
+V1 = I1*R1
+V2 = I1*R2
+</pre>
+<pre class="codeoutput">
+I1 =
+
+    0.0084
+
+
+V1 =
+
+    8.3221
+
+
+V2 =
+
+    1.6779
+
+</pre>
+<h2 id="3">Part 2 - Solving For Complex Circuit</h2>
+<pre class="codeinput">syms <span class="string">I1</span> <span class="string">I2</span> <span class="string">V1</span> <span class="string">V2</span> <span class="string">V3</span> <span class="string">I3</span>;
+
+R23 = (R2+R3)/(R2*R3);
+
+eq1 = I1 == V1/R1;
+eq2 = I1 - I2 - I3 == 0;
+eq3 = Vs-V1-V2 == 0;
+eq4 = V3 == V2;
+eq5 = I2 == V2/R2;
+eq6 = I3 == V3/R3;
+
+
+eqns = [eq1, eq2, eq3, eq4, eq5, eq6];
+
+vars = [I1,I2,I3,V1,V2,V3];
+
+[C, S] = equationsToMatrix(eqns, vars);
+V = inv(C) * S
+</pre>
+<pre class="codeoutput"> 
+V =
+ 
+   31990/3754413
+   10000/1251471
+    1990/3754413
+10524710/1251471
+ 1990000/1251471
+ 1990000/1251471
+ 
+</pre>
+<h2 id="4">Part 3 - Kirchhoff Laws</h2>
+<pre class="codeinput">syms <span class="string">I1</span> <span class="string">I2</span> <span class="string">I3</span> <span class="string">I4</span> <span class="string">I5</span> <span class="string">V1</span> <span class="string">V2</span> <span class="string">V3</span> <span class="string">V4</span> <span class="string">V5</span> <span class="string">V6</span>;
+
+R56 = R5 + R6;
+R456 = (R4+R56)/(R4*R56);
+
+eq1 = Vs - V1 - V2 == 0;
+eq2 = I1 == V1/R1;
+eq3 = I2 == V2/R2;
+eq4 = I3 == V3/R3;
+eq5 = I4 == V4/R4;
+eq6 = I5 == V5/R5;
+eq7 = I5 == V6/R6;
+eq8 = V5+V6-V4 == 0;
+eq9 = V3 + V4 - V2 == 0;
+eq10 = I3 + I2 - I1 == 0;
+eq11 = I5 + I4 - I3 == 0;
+
+eqns = [eq1, eq2, eq3, eq4, eq5, eq6, eq7, eq8, eq9, eq10, eq11];
+
+
+vars = [I1,I2,I3,I4,I5,V1,V2,V3,V4,V5,V6];
+
+[C, S] = equationsToMatrix(eqns, vars);
+V = inv(C) * S
+
+<span class="comment">% Assign values from V back to the variables</span>
+I1 = V(1);
+I2 = V(2);
+I3 = V(3);
+I4 = V(4);
+I5 = V(5);
+V1 = V(6);
+V2 = V(7);
+V3 = V(8);
+V4 = V(9);
+V5 = V(10);
+V6 = V(11);
+
+<span class="comment">% Verify KCL:</span>
+
+I2+I3-I1 <span class="comment">% a</span>
+I5+I4-I3 <span class="comment">% b</span>
+
+<span class="comment">% Verify KVL:</span>
+
+Vs-V1-V2
+V3+V4-V2
+V5+V6-V4
+</pre>
+<pre class="codeoutput"> 
+V =
+ 
+   14615870/1725007169
+   14192000/1725007169
+     423870/1725007169
+     330340/1725007169
+      93530/1725007169
+14425863690/1725007169
+ 2824208000/1725007169
+ 1271610000/1725007169
+ 1552598000/1725007169
+  701475000/1725007169
+  851123000/1725007169
+ 
+ 
+ans =
+ 
+0
+ 
+ 
+ans =
+ 
+0
+ 
+ 
+ans =
+ 
+0
+ 
+ 
+ans =
+ 
+0
+ 
+ 
+ans =
+ 
+0
+ 
+</pre>
+<h2 id="5">Part 4 - Nominal Value of Resistors</h2>
+<pre class="codeinput">
+<span class="comment">% Brown Black Red &gt;&gt;&gt; 1000 Ohm</span>
+<span class="comment">% Red Purple Red &gt;&gt;&gt; 2700 Ohm</span>
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2024a</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% Prelab 2
+
+% Name: Logan Calder
+% Lab Number: 2
+% Class: ECEN 50L
+% Date: 4/16/24
+% Section time: 14:15T
+
+%% Part 1 - Solving For Resistors in Series
+
+Vs = 10;
+
+R1 = 987;
+R2 = 199;
+R3 = 3000;
+R4 = 4700;
+R5 = 7500;
+R6 = 9100;
+
+% V = IR so I = V/R
+
+Rt = R1+R2; % They are in series so add
+
+I1 = Vs/(R1+R2)
+V1 = I1*R1
+V2 = I1*R2
+
+%% Part 2 - Solving For Complex Circuit
+
+syms I1 I2 V1 V2 V3 I3;
+
+R23 = (R2+R3)/(R2*R3);
+
+eq1 = I1 == V1/R1;
+eq2 = I1 - I2 - I3 == 0;
+eq3 = Vs-V1-V2 == 0;
+eq4 = V3 == V2;
+eq5 = I2 == V2/R2;
+eq6 = I3 == V3/R3;
+
+
+eqns = [eq1, eq2, eq3, eq4, eq5, eq6];
+
+vars = [I1,I2,I3,V1,V2,V3];
+
+[C, S] = equationsToMatrix(eqns, vars);
+V = inv(C) * S
+
+%% Part 3 - Kirchhoff Laws
+
+syms I1 I2 I3 I4 I5 V1 V2 V3 V4 V5 V6;
+
+R56 = R5 + R6;
+R456 = (R4+R56)/(R4*R56);
+
+eq1 = Vs - V1 - V2 == 0;
+eq2 = I1 == V1/R1;
+eq3 = I2 == V2/R2;
+eq4 = I3 == V3/R3;
+eq5 = I4 == V4/R4;
+eq6 = I5 == V5/R5;
+eq7 = I5 == V6/R6;
+eq8 = V5+V6-V4 == 0;
+eq9 = V3 + V4 - V2 == 0;
+eq10 = I3 + I2 - I1 == 0;
+eq11 = I5 + I4 - I3 == 0;
+
+eqns = [eq1, eq2, eq3, eq4, eq5, eq6, eq7, eq8, eq9, eq10, eq11];
+
+
+vars = [I1,I2,I3,I4,I5,V1,V2,V3,V4,V5,V6];
+
+[C, S] = equationsToMatrix(eqns, vars);
+V = inv(C) * S
+
+% Assign values from V back to the variables
+I1 = V(1);
+I2 = V(2);
+I3 = V(3);
+I4 = V(4);
+I5 = V(5);
+V1 = V(6);
+V2 = V(7);
+V3 = V(8);
+V4 = V(9);
+V5 = V(10);
+V6 = V(11);
+
+% Verify KCL:
+
+I2+I3-I1 % a
+I5+I4-I3 % b
+
+% Verify KVL:
+
+Vs-V1-V2
+V3+V4-V2
+V5+V6-V4
+
+%% Part 4 - Nominal Value of Resistors
+
+% Brown Black Red >>> 1000 Ohm
+% Red Purple Red >>> 2700 Ohm
+
+
+##### SOURCE END #####
+-->
+</body>
+</html>
