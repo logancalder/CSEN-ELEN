@@ -1,0 +1,16 @@
+# Name: Logan Calder
+# Date: 09/24/2024
+# Title: Lab1 – Part 2 (Observations)
+# Description: This file contains all observations for Part 1 of Lab 1.
+
+
+Observations:
+
+The script works as designed, initially denying access to the user as if [ $user = "salagtash" ] does not match my terminal user.
+
+Once changed to match my session's user, the script prompts for a height and width. It then correctly displays the area of
+a rectangle created using these measurements.
+
+A prompt is then given to the user to proceed with another rectangle, or terminate. It should be noted that it is case-sensitive,
+so typing 'no' would not successfully terminate the program. Any other text input than "No" will result in a second area being
+calculated.
