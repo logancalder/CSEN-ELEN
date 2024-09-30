@@ -1,0 +1,10 @@
+// Name: Logan Calder
+// Date: 09/30/2024
+// Title: Lab2 – Observations
+// Description: My notes on steps that asked for observations.
+
+Step 3: Once compiled, a seg fault arises (Segmentation fault: 11). It should also be noted that this program cannot 
+run on Windows, as it must be on a Linux environment.
+
+Step 4: Smaller delays (such as 500, 1000) run quite quick, as this is measured in ms. However, a larger delay such as 30000 takes
+much longer to run.

@@ -1,3 +1,9 @@
+// Name: Logan Calder
+// Date: 09/30/2024
+// Title: Lab2 – Part 1
+// Description: This file contains a fork, which creates a child process. Total processes are two.
+// These processes run a loop that prints out a message and sleeps for a given amount of time, n.
+
 /*Sample C program for Lab assignment 1*/
 #include <stdio.h>     /* printf, stderr */
 #include <sys/types.h> /* pid_t */
