@@ -10,6 +10,7 @@
 #include <unistd.h>    /* fork */
 #include <stdlib.h>    /* atoi */
 #include <errno.h>     /* errno */
+#include <stdbool.h>
 /* main function with command-line arguments to pass */
 
 int main(int argc, char *argv[])
@@ -20,8 +21,14 @@ int main(int argc, char *argv[])
 
     // 7 processes will be created
 
-    printf("Parent\n");
-    for (int i = 0; i < 4; i++)
+    pid_t pid_list[2];
+
+    int generation = 0;
+    int children = 0;
+    bool should_make_children = true;
+
+    // printf("PARENT Parent PID: %d My PID: %d Some children\n", getppid(), getpid());
+    while (1)
     {
         pid_t pid = fork();
 
@@ -32,18 +39,32 @@ int main(int argc, char *argv[])
 
         else if (pid == 0) // If is a child, say so
         {
-            printf("Child process %d\n", i);
-            usleep(n);
-            exit(0);
+            children = 0;
+            generation++;
+            if (generation >= 3)
+            {
+                printf("CHILD My PID: %d Parent PID: %d  No children\n", getpid(), getppid());
+                break;
+            }
+            if (should_make_children)
+            {
+                continue;
+            }
+            else
+            {
+                printf("CHILD My PID: %d Parent PID: %d  No Children\n", getpid(), getppid());
+                break;
+            }
         }
-
-        // Parent process waits for every two child processes
-        if (i % 2 == 1)
+        else
         {
-            int status;
-            wait(NULL);
-            wait(NULL);
-            printf("Parent\n");
+            children++;
+            should_make_children = false;
+            if (children == 2)
+            {
+                printf("PARENT My PID: %d Parent PID: %d Children %d %d\n", getpid(), getppid(), wait(0), wait(0));
+                break;
+            }
         }
     }
 

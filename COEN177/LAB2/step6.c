@@ -13,13 +13,15 @@
 
 /* main function with command-line arguments to pass */
 
-void *func(int n) // Basic function for threads to call
+void *func(void *n) // Basic function for threads to call
 {
     for (int i = 0; i < 100; i++)
     {
         printf("\t\t Thread task %d\n", i);
-        usleep(n);
+        usleep((int)(size_t)n);
     }
+
+    return NULL;
 };
 
 int main(int argc, char *argv[])
@@ -29,13 +31,13 @@ int main(int argc, char *argv[])
 
     // Thread creation
 
-    if (pthread_create(&pthread1, NULL, func, NULL)) // If this != 0, that signifies an error in creation.
+    if (pthread_create(&pthread1, NULL, func, (void *)(size_t)n)) // If this != 0, that signifies an error in creation.
     {
         fprintf(stderr, "Error creating thread 1\n");
         return 1;
     }
 
-    if (pthread_create(&pthread2, NULL, func, NULL))
+    if (pthread_create(&pthread2, NULL, func, (void *)(size_t)n))
     {
         fprintf(stderr, "Error creating thread 2\n");
         return 1;
