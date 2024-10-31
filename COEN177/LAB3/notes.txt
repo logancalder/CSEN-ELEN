@@ -1,0 +1,18 @@
+// Name: Logan Calder
+// Date: 10/09/2024
+// Title: Lab3 – Notes
+// Description: Notes for Parts 6 and 7.
+
+Part 6
+
+What I notice regarding this script is that some threads run under the same iteration number. This is due to the &i 
+argument being passed into the function ran by the thread. However, since threads share the same memory location,
+some threads are accessing 'i' at the same time, thus displaying the same iteration number. 'i' is still incremented,
+thus hiding some other increment occurences (what should have shown up had it not accessed the same 'i' as another
+thread).
+
+Part 7
+
+The fix is rather simple and is to just allocate a variable for each thread. Using malloc, we may ensure the argument is
+unique and will not be accessed by other threads. Using this instead of the common variable 'i' prevents the shared
+indexing.

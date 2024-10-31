@@ -3,22 +3,11 @@
   "configurations": [
     {
       "name": "C/C++ Runner: Debug Session",
-      "type": "cppdbg",
+      "type": "lldb",
       "request": "launch",
       "args": [],
-      "stopAtEntry": false,
-      "externalConsole": true,
-      "cwd": "c:/Users/lcald/OneDrive/Documents/GitHub/COEN-ELEN/COEN177/LAB2",
-      "program": "c:/Users/lcald/OneDrive/Documents/GitHub/COEN-ELEN/COEN177/LAB2/build/Debug/outDebug",
-      "MIMode": "gdb",
-      "miDebuggerPath": "gdb",
-      "setupCommands": [
-        {
-          "description": "Enable pretty-printing for gdb",
-          "text": "-enable-pretty-printing",
-          "ignoreFailures": true
-        }
-      ]
+      "cwd": "/Users/logancalder/Documents/GitHub/COEN-CSEN/COEN 171/PRACTICUM1",
+      "program": "/Users/logancalder/Documents/GitHub/COEN-CSEN/COEN 171/PRACTICUM1/build/Debug/outDebug"
     }
   ]
 }

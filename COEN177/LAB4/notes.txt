@@ -1,0 +1,25 @@
+// Name : Logan Calder
+// Date: 10/15/2024
+// Title: Lab4 – Notes
+// Description: Notes about the lab
+
+1. 
+    You do not get the same result each time. This is due to all 20 threads sharing the same variable and same memory address, causing them to call
+    and update the variable at random. Running this while running another program causes it to run slower. It should be noted that the "return"
+    statements do call in order, but this is simply because of it being outside of the parallel computing portion of the script. Due to the threads
+    returning prior, these print statements will call in order of the loop.
+
+    go() has a variable per thread, stored on the thread control blocks.
+
+    main() has a variable, i, which is per shared state, given that it was defined in main and is global. Each thread then accesses it, causing the
+    errors with the print statements.
+
+2. 
+    The threads will now print in order of their creation, with "Main thread done" following them. Given that each print statement should occur
+    whenever the for loop calls the thread creation, this is not surprising. The reason we have these in order versus the out of order threads
+    last time was that we had two seperate loops, with multiple threads, sharing the same variable in memory. We cannot guarantee they will access
+    i in the same order, given that they are running at the same time.
+
+3. Threads are created for each matmul computation, which are then run. The threads are then joined back together, successfully computing
+the matmul.
+    

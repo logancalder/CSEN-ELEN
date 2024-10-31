@@ -1,0 +1,3 @@
+1. This program differes from threadHello as threadHello consistently had different results, whereas this program always prints
+the same output. What happens when we run this program is when a thread enters a critical section, it prints it, and when it returns, it prints.
+It does so in an orderly fashion as we join threads before printing.

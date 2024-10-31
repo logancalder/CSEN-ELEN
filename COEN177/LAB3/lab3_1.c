@@ -1,3 +1,8 @@
+// Name: Logan Calder
+// Date: 10/09/2024
+// Title: Lab3 – Part 1
+// Description: This file contains a pipe, which then runs a system call for more and ls.
+
 /**************************
  *	pipe()
  **************************/

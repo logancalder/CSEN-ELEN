@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "lldb",
+      "request": "launch",
+      "args": [],
+      "cwd": "/Users/logancalder/Documents/GitHub/COEN-CSEN/COEN177/LAB2",
+      "program": "/Users/logancalder/Documents/GitHub/COEN-CSEN/COEN177/LAB2/build/Debug/outDebug"
+    }
+  ]
+}

@@ -1,8 +1,7 @@
 // Name: Logan Calder
 // Date: 10/09/2024
-// Title: Lab3 – Part 2
-// Description: This file contains a pipe, which uses a reader and writer to communicate between two processes.
-//              These processes then display the command that has been run, plus any arguments.
+// Title: Lab3 – Part 3
+// Description: This file contains a pipe, which communicates what has been read with ls to the other end of the pipe, which displays it.
 
 /**************************
  *   Lab3 - pipe()
@@ -24,18 +23,21 @@ int main(int argc, char *argv[])
 
     if (fork() == 0)
     {
-        printf("\nWriter on the upstream end of the pipe -> %d arguments \n", argc);
+        printf("\nWriter on the upstream end of the pipe\n");
         close(fds[0]);
-        for (i = 0; i < argc; i++)
-        {
-            write(fds[1], argv[i], strlen(argv[i]));
-        }
+
+        dup2(fds[1], 1);
+        execlp("ls", "ls", 0);
+
         exit(0);
     }
     else if (fork() == 0)
     {
         printf("\nReader on the downstream end of the pipe \n");
         close(fds[1]);
+
+        dup2(fds[0], 0);
+
         while ((count = read(fds[0], buff, 60)) > 0)
         {
             for (i = 0; i < count; i++)
