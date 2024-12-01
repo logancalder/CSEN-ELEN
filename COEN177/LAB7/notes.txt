@@ -1,0 +1,26 @@
+// Name : Logan Calder
+// Date: 11/11/24
+// Title: Lab7 – Observations
+// Description: This file contains instructions on how to execute lab 7.
+
+First, I relaunched my Minix environment from Lab 6. I did this by running VirtualBox, which had Minix on it.
+
+I then fetched the IP of the custom Minix and connected to it in file explorer, using the IP, user, and password. This permitted me to look and edit files in VS Code, which I did.
+
+I then navigated to /usr/src/kernel/ and found the file proc.c . This contained the function pick_proc, which needed to be modified.
+
+In this function, I added the following:
+
+    int random;	
+
+    for(q = 0; q < NR_SCHED_QUEUES; q++) {
+            random = rand() % 100;
+            if (randome < 15) 
+                continue;
+            }
+            else {
+                // rest of code
+
+    }
+
+Then restart Minix using shutdown and exit, spam 2, and boom, now the machine is slow.

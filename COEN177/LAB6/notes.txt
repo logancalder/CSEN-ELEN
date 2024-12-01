@@ -1,0 +1,17 @@
+// Name : Logan Calder
+// Date: 11/03/2024
+// Title: Lab6 – Observations
+// Description: This file contains instructions on how to execute lab 6.
+
+1. Log on to ECC Systems, then launch VirtualBox. From here, select Expert Mode and then navigate to Networks under Tools.
+   Create a network named vboxnet0, select DHCP Server under properties, Enable Server, and Apply.
+
+2. Start the VM and setup a password. Use passwd to configure it. Obtain the IP using ifconfig.
+
+3. Launch FTP daemon using tcpd ftp in.ftpd.
+
+4. Run grep "2010" /usr/src/* in the MINIX command line to obtain copyright file. Add your name to it using VI, then wq.
+
+5. Type shutdown, then exit. Get ready to press a number to launch your custom MINIX once the reboot completes.
+
+6. Voila, your name should appear. If not, you made a whoopsie.
