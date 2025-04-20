@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="with=device-width, initial-scale=1.0">
+    <title>Lab 3</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/92c2b5b560.js" crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+</head>
+
+<script>
+    document.addEventListener('scroll', () => {
+        const header = document.querySelector('.nav-bar');
+        const content = document.querySelector('.content');
+        const projects = document.querySelector('.projects');
+
+        let num = window.scrollY / window.innerHeight;
+        if(num > 0){
+            header.classList.add('scrolled');
+            content.classList.add('scrolled');
+            projects.classList.add('scrolled');
+        }else{
+            header.classList.remove('scrolled');
+            content.classList.remove('scrolled');
+            projects.classList.remove('scrolled');
+        }
+        });
+
+    function toggleNavBar() {
+        var element = document.getElementById("mobile-nav-bar");
+        console.log(element);
+        element.classList.toggle("fade");
+    };
+</script>
+
+<input type="file" id="fileInput" style="display: none;">
+
+<body>
+    <div class="nav-bar">
+        <a href="home"><img class="logo" src="recycle.png" alt="logo"></a>
+        <nav class="nav">
+            <ul>
+                <li class="nav-button"><a href="#" id = "selected">Information</a></li>
+                <li class="nav-button"><a href="ideas.html">Ideas</a></li>
+            </ul>
+        </nav>
+        <div onclick = "toggleNavBar()" class = "nav-menu-container">
+            <i class="fa-solid fa-bars" id = "nav-menu-button"></i>
+        </div>
+        
+    </div>
+        
+    <div id = "mobile-nav-bar">
+        <ul>
+            <li class="nav-button"><a href="ideas.html">Ideas</a></li>
+        </ul>
+    </div>
+
+    <div class = "content">
+        <img src="compost.jpg" id="about">
+        <div>
+            <h1 class = "title">General <span id = "gradient">information</span>...</h1>
+            <img src="compost.jpg" id="about-mobile">
+            <div id = "bio">
+                <h2>We are focused on educating others how to reuse and compost food.</h2>
+                <p>Learning to properly dispose of food is <span id = "highlight">extremely important</span>, with many people still throwing out excess food waste or scraps daily.</p>
+                <p>Our focus is to train users to learn the proper food management techniques, including not overconsuming, <span id = "highlight">composting</span>, and reusing excess food to be combined into new, exciting dishes.</p>
+                <p>Since food is used by everyone, with people of all various ages cooking and handling meals, this site is for everyone! Using <span id = "highlight">generative AI</span>, we offer a unique learning opportunity to not only learn what foods make great fertilizer once broken down, but also sharing unique and exciting <span id = "highlight">recipes</span> that you would otherwise have no idea how to compose!</p>
+            </div>
+        </div>
+    </div>
+
+    <div class = "list-container">
+        <h1 class = "resources"><div><span id = "gradient">Resources</span></h1>
+        <ul class = "list">
+            <li><a href = "https://www.nrdc.org/stories/composting-101">Composting 101</a></li>
+            <li><a href = "https://www.stopwaste.org/at-home/reduce-and-reuse/reducing-wasted-food/food-scrap-composting">Food Scrap Composting</li>
+            <li><a href = "https://www.bbcgoodfood.com/recipes/collection/leftovers-recipes">Leftovers Recipes</li>
+        </ul>
+    </div>
+    
+
+</body>
+</html>

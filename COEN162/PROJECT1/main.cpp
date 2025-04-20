@@ -2,11 +2,11 @@
 #include <string>
 #include <cstring>
 #include <regex>
-#include <winsock2.h>
-#include <ws2tcpip.h>
-
-// Link with the Winsock library
-#pragma comment(lib, "ws2_32.lib")
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <netdb.h>
+#include <unistd.h>
 
 // Function to parse URL and extract host and path
 bool parseUrl(const std::string &url, std::string &host, std::string &path)
@@ -34,14 +34,6 @@ bool parseUrl(const std::string &url, std::string &host, std::string &path)
 
 int main()
 {
-    // Initialize Winsock
-    WSADATA wsaData;
-    if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
-    {
-        std::cerr << "WSAStartup failed" << std::endl;
-        return 1;
-    }
-
     std::string url;
     std::string host, path;
 
@@ -53,7 +45,6 @@ int main()
     if (!parseUrl(url, host, path))
     {
         std::cerr << "Invalid URL format. Please use http://hostname/path format." << std::endl;
-        WSACleanup();
         return 1;
     }
 
@@ -61,16 +52,16 @@ int main()
     std::cout << "Path: " << path << std::endl;
 
     // Create socket
-    SOCKET sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-    if (sock == INVALID_SOCKET)
+    int sock = socket(AF_INET, SOCK_STREAM, 0);
+    if (sock < 0)
     {
-        std::cerr << "Failed to create socket: " << WSAGetLastError() << std::endl;
-        WSACleanup();
+        std::cerr << "Failed to create socket" << std::endl;
         return 1;
     }
 
     // Set up server address structure
     struct sockaddr_in server;
+    memset(&server, 0, sizeof(server));
     server.sin_family = AF_INET;
     server.sin_port = htons(80); // HTTP port
 
@@ -78,9 +69,8 @@ int main()
     struct hostent *serverInfo = gethostbyname(host.c_str());
     if (serverInfo == NULL)
     {
-        std::cerr << "Failed to resolve hostname: " << WSAGetLastError() << std::endl;
-        closesocket(sock);
-        WSACleanup();
+        std::cerr << "Failed to resolve hostname" << std::endl;
+        close(sock);
         return 1;
     }
 
@@ -88,11 +78,10 @@ int main()
     memcpy(&server.sin_addr, serverInfo->h_addr, serverInfo->h_length);
 
     // Connect to server
-    if (connect(sock, (struct sockaddr *)&server, sizeof(server)) == SOCKET_ERROR)
+    if (connect(sock, (struct sockaddr *)&server, sizeof(server)) < 0)
     {
-        std::cerr << "Connection failed: " << WSAGetLastError() << std::endl;
-        closesocket(sock);
-        WSACleanup();
+        std::cerr << "Connection failed" << std::endl;
+        close(sock);
         return 1;
     }
 
@@ -103,11 +92,10 @@ int main()
     request += "\r\n";
 
     // Send request
-    if (send(sock, request.c_str(), request.length(), 0) == SOCKET_ERROR)
+    if (send(sock, request.c_str(), request.length(), 0) < 0)
     {
-        std::cerr << "Failed to send request: " << WSAGetLastError() << std::endl;
-        closesocket(sock);
-        WSACleanup();
+        std::cerr << "Failed to send request" << std::endl;
+        close(sock);
         return 1;
     }
 
@@ -126,9 +114,8 @@ int main()
     std::cout << "\nResponse from server:\n"
               << response << std::endl;
 
-    // Close socket and cleanup Winsock
-    closesocket(sock);
-    WSACleanup();
+    // Close socket
+    close(sock);
 
     return 0;
 }

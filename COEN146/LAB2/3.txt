@@ -1,0 +1,43 @@
+// Name: Logan Calder
+// Date: 01/16/2025
+// Title: Lab2 – Step 3
+// Description: Notes and observations for the lab
+
+1.  
+    Step 5 - copying 100,000 Bytes file
+    LAB1:
+
+    time to copy using functions: 0.0008750
+    time to copy using syscalls: 0.0007690
+
+    LAB2:
+
+    time to copy using functions: 0.0002730
+    time to copy using syscalls: 0.0002330
+
+    Step 5 - copying 1000,000 Bytes file
+    time to copy using functions: 0.0016210
+    time to copy using syscalls: 0.0017960
+
+    LAB2: 
+    time to copy using functions: 0.0009580
+    time to copy using syscalls: 0.0011150
+
+
+    Thus, it is quite apparent that multithreading is faster for copying the files.
+
+2. 
+    One Object: 143 ms
+    Non-Persistent 6 Objects: 707 ms
+    6 parallel connection - Persistent: 190 ms
+    6 parallel connection - Non-Persistent: 237 ms
+
+3. 
+    e.  I notice that these two commands, when run, return the index.php page from the specified URL, compromised of HTML code.
+        There is also a JavaScript portion at the top of the page. This returns code, and does not return how the page appears
+        visually to a client.
+
+    f.  i.      index.php 
+        ii.     1.1
+        iii.    I observed PNG and JPG, which are common image formats online. PNG was used for button pictures, as they have transparent
+                backgrounds, whereas JPG was used for larger photos as it is a more compressed format, which allows the page to load faster.

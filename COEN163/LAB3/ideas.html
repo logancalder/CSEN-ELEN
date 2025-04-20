@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="with=device-width, initial-scale=1.0">
+    <title>LAB3</title>
+    <link rel="stylesheet" href="style-ideas.css">
+    <script src="https://kit.fontawesome.com/92c2b5b560.js" crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+</head>
+
+<!-- Other scripts -->
+
+<script>
+    document.addEventListener('scroll', () => {
+        const header = document.querySelector('.nav-bar');
+        const content = document.querySelector('.content');
+        const projects = document.querySelector('.projects');
+
+        let num = window.scrollY / window.innerHeight;
+        if(num > 0){
+            header.classList.add('scrolled');
+            content.classList.add('scrolled');
+            projects.classList.add('scrolled');
+        }else{
+            header.classList.remove('scrolled');
+            content.classList.remove('scrolled');
+            projects.classList.remove('scrolled');
+        }
+        });
+
+    function toggleSelection(element) {
+        var content = document.getElementById('skills-content');
+        
+        var spans = document.getElementsByClassName('about-skill');
+        var spanContent = element.textContent;
+        content.style.opacity = 1;
+        if(spanContent == "Skills"){
+            content.textContent = "Python, C, C++, C#, Golang, Java, Javascript, HTML & CSS, K8, Docker";
+        } else if(spanContent == "Experience"){
+            content.textContent = "Software Engineering Intern @ HPE Stanford Treehacks 2023 Nominee \nResearch Assistant @ SCU";
+        } else{
+            content.textContent = "Santa Clara Unviersity, B.S. 2025\nComputer Science & Engineering";
+        }
+        
+        // Remove 'selected' class from all spans
+        for (var i = 0; i < spans.length; i++) {
+            spans[i].classList.remove('selected');
+        }
+        element.classList.add('selected');
+        };
+
+    function scrollToDiv() {
+        var div = document.getElementById('connect');
+        div.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    };
+
+    function toggleNavBar() {
+        var element = document.getElementById("mobile-nav-bar");
+        console.log(element);
+        element.classList.toggle("fade");
+    };
+</script>
+
+<input type="file" id="fileInput" style="display: none;">
+
+<body>
+    <div class="nav-bar">
+        <a href="home"><img class="logo" src="recycle.png" alt="logo"></a>
+        <nav class="nav">
+            <ul>
+                <li class="nav-button"><a href="info.html">Information</a></li>
+                <li class="nav-button"><a href="#" id = "selected">Ideas</a></li>
+            </ul>
+        </nav>
+        <div onclick = "toggleNavBar()" class = "nav-menu-container">
+            <i class="fa-solid fa-bars" id = "nav-menu-button"></i>
+        </div>
+        
+    </div>
+        
+    <div id = "mobile-nav-bar">
+        <ul>
+            <li class="nav-button"><a href="ideas.html">Ideas</a></li>
+        </ul>
+    </div>
+
+    <div class = "header">
+        <div class = "header-text">
+            <div class = "intro">Hi there, let's talk<br><span id = "name">recycling</span>.</div>
+            <div class = "bio">We have some ideas on how you can conserve, reuse, and compost foods!</div>
+            <div class = "buttons">
+                <!-- <button id = "colored-button" onclick="scrollToDiv()">Contact</button> -->
+                <!-- <a href = "../lc_resume.pdf" target="_blank"><button id = "transparent-button">Download CV</button></a> -->
+                <button id = "colored-button">AI Scanner</button>
+                <a><button id = "transparent-button">Our Mission</button></a>
+            </div>
+        </div>
+        <img src="recycle.png" id="img">
+    </div>
+
+    <img src="recycle.png" id="img_mobile">
+
+    <div class = "content">
+        <h1>My Ideas...</h1>
+        <p>This app will feature a smart AI scanner, capable of analyzing pictures that you take of leftover food! From here, it will suggest recipes that can be composed from the food shown, or how to properly dispose of it. If compostable, which most are, it will state that as well. Various foods have a higher "compost rating," and so the AI will display out of five stars how great it is for your crops!
+        <br><br>I also would like to have some hand-picked videos that showcase the best composting practices, and how easy it is to do at home. Further, I want to also showcase what organic matter may be disposed of in the green bins. Since the user uses AI, a user login page will be made.
+        <br><br>Users may find this site by Googling for it, and may click on login with Google to use it. To ask AI, one may click on the AI Scanner button on this page.</p>
+        <br>
+        <div id = "skills-content">Python, C, C++, C#, Golang, Java, Javascript, HTML & CSS, K8, Docker</div> <!-- This becomes the skills list per category -->
+    </div>
+
+    <div class = "projects">
+        <h2>Featured Videos</h2>
+    </div>
+
+</body>
+</html>
