@@ -60,6 +60,8 @@
     "*.embeddedhtml": "html",
     "stdlib.h": "c",
     "wait.h": "c",
-    "cstdlib": "cpp"
+    "cstdlib": "cpp",
+    "stdio.h": "c",
+    "types.h": "c"
   }
 }

@@ -1,0 +1,53 @@
+netstat
+
+Output: Displays internet connections, their local/foreign address, and state
+Purpose/Function: Used for troubleshooting, monitoring, and configuration
+Scenarios: When you would like to view all established internet connections
+
+ifconfig
+
+Output: Displays a lot of information of network interfaces
+Purpose/Function: Is used to configure the kernel network interfaces
+Scenarios: Can be used to debug or tune system, as well as configure network interfaces
+
+hostname
+
+Output: Outputs the hostname of the PC
+Purpose/Function: To find the IP address of your PC 
+Scenarios: Used when you need to know what the IP of your device is, potentially with debugging or seeing who is connected to a service
+
+ping
+
+Output: Displays valuable ping information such as the time taken to send a package, etc
+Purpose/Function: Used to see if a connection is stable or established
+Scenarios: When you need to verify that a connection exists between two endpoints
+
+traceroute
+
+Output: Displays data of how data traveled to get from point A to B
+Purpose/Function: Is used to see how data has been transmitted from a source to destination
+Scenarios: When you must track how data is being sent, traceroute displays how it got to destination
+
+telnet
+
+Output: Displays the virtual terminal connected to 
+Purpose/Function: Provides access to virtual terminals
+Scenarios: When needed to work on a remote device, telnet permits this
+
+host/dig
+
+Output: Both output DNS results and server information, including IP addresses, domain names, query stats, and more
+Purpose/Function: Used to troubleshoot DNS queries and lookups
+Scenarios: Trying to verify DNS record issues or resolving a domain name to IP address
+
+route
+
+Output: Displays the routing table regarding network routes on system
+Purpose/Function: Used to see network routes configured on the system
+Scenarios: Used to setup hosts or networks using an interface after it has been configured
+
+arp
+
+Output: Displays Address Resolution Protocol cache with IP addresses
+Purpose/Function: Displays and modifies internet to adapter address translation tables 
+Scenarios: Used when you need to find another computer's MAC address
