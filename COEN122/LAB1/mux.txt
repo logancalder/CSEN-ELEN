@@ -1,0 +1,31 @@
+module mux(
+    input [1:0] sel,
+    input A, B, C, D,
+    output out
+);
+    
+    // Internal wires for select line decoding
+    wire sel0_not, sel1_not;
+    wire select_A, select_B, select_C, select_D;
+    wire [3:0] mux_outputs;
+    
+    // Invert select lines
+    not(sel0_not, sel[0]);
+    not(sel1_not, sel[1]);
+    
+    // Decode select lines to choose input
+    and(select_A, sel0_not, sel1_not);    // 00
+    and(select_B, sel[0], sel1_not);      // 01
+    and(select_C, sel0_not, sel[1]);      // 10
+    and(select_D, sel[0], sel[1]);        // 11
+    
+    // Gate each input with its select line
+    and(mux_outputs[0], A, select_A);
+    and(mux_outputs[1], B, select_B);
+    and(mux_outputs[2], C, select_C);
+    and(mux_outputs[3], D, select_D);
+    
+    // Combine all outputs
+    or(out, mux_outputs[0], mux_outputs[1], mux_outputs[2], mux_outputs[3]);
+
+endmodule 

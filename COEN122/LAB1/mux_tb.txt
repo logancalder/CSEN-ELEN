@@ -1,0 +1,68 @@
+module mux_tb;
+    reg [1:0] sel;
+    reg A, B, C, D;
+    wire out;
+
+    // Instantiate the mux_4to1
+    mux_4to1 uut (
+        .sel(sel),
+        .A(A),
+        .B(B),
+        .C(C),
+        .D(D),
+        .out(out)
+    );
+
+    initial begin
+        // Initialize all inputs
+        sel = 2'b00;
+        A = 1; B = 0; C = 1; D = 0;
+        #100; // Wait 100 time units after initialization
+        
+        // Test Case 1: Select A (should be 1)
+        sel = 2'b00;
+        #100;
+        
+        // Test Case 2: Select B (should be 0)
+        sel = 2'b01;
+        #100;
+        
+        // Test Case 3: Select C (should be 1)
+        sel = 2'b10;
+        #100;
+        
+        // Test Case 4: Select D (should be 0)
+        sel = 2'b11;
+        #100;
+
+        // Change input values
+        A = 0; B = 1; C = 0; D = 1;
+        #100; // Wait after changing inputs
+        
+        // Test Case 5: Select A (should be 0)
+        sel = 2'b00;
+        #100;
+        
+        // Test Case 6: Select B (should be 1)
+        sel = 2'b01;
+        #100;
+        
+        // Test Case 7: Select C (should be 0)
+        sel = 2'b10;
+        #100;
+        
+        // Test Case 8: Select D (should be 1)
+        sel = 2'b11;
+        #100;
+
+        $finish;
+    end
+
+    // Monitor changes
+    initial begin
+        $display("Starting testbench...");
+        $monitor("Time=%0d sel=%b A=%b B=%b C=%b D=%b out=%b", 
+                 $time, sel, A, B, C, D, out);
+    end
+
+endmodule 

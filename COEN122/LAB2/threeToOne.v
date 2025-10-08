@@ -1,0 +1,18 @@
+// threeToOne.v
+// 3-to-1 multiplexer for selecting B, zero, or -B
+// sel encoding used here:
+//   2'b00 -> B
+//   2'b01 -> 0 (zero)
+//   2'b10 -> negB
+// other encodings -> B (default)
+module threeToOne (
+    input  [31:0] B,
+    input  [31:0] negB,
+    input  [1:0]  sel,
+    output [31:0] out
+);
+    wire [31:0] z = 32'b0;
+    assign out = (sel == 2'b00) ? B :
+                 (sel == 2'b01) ? z :
+                 (sel == 2'b10) ? negB : B;
+endmodule

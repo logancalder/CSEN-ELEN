@@ -62,6 +62,11 @@
     "wait.h": "c",
     "cstdlib": "cpp",
     "stdio.h": "c",
-    "types.h": "c"
+    "types.h": "c",
+    "locale": "c",
+    "inet.h": "c",
+    "iosfwd": "cpp",
+    "__mutex_base": "cpp",
+    "mutex": "cpp"
   }
 }
