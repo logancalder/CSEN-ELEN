@@ -1,0 +1,61 @@
+// register_file_tb.v
+`timescale 1ns/1ps
+
+module register_file_tb;
+    reg clk = 0;
+    reg write_en;
+    reg [5:0] rs_addr, rt_addr, rd_addr;
+    reg [31:0] data_in;
+    wire [31:0] rs_data, rt_data;
+
+    register_file uut (
+        .clk(clk),
+        .write_en(write_en),
+        .rs_addr(rs_addr),
+        .rt_addr(rt_addr),
+        .rd_addr(rd_addr),
+        .data_in(data_in),
+        .rs_data(rs_data),
+        .rt_data(rt_data)
+    );
+
+    initial begin
+        clk = 0;
+        forever #5 clk = ~clk;
+    end
+
+    initial begin
+        $dumpfile("register_file_tb.vcd");
+        $dumpvars(0, register_file_tb);
+
+        // test writing several registers then reading them back
+        write_en = 1;
+        // write 0xAAAAAAAA to reg 5
+        rd_addr = 6'd5; data_in = 32'hAAAAAAAA; @(posedge clk);
+        // write 0x55555555 to reg 10
+        rd_addr = 6'd10; data_in = 32'h55555555; @(posedge clk);
+        // write 0xDEADBEEF to reg 63
+        rd_addr = 6'd63; data_in = 32'hDEADBEEF; @(posedge clk);
+
+        // disable writing
+        write_en = 0;
+
+        // read back reg 5 and reg 10
+        rs_addr = 6'd5; rt_addr = 6'd10; #1;
+        $display("time=%0t rs_addr=%0d rs_data=%h rt_addr=%0d rt_data=%h", $time, rs_addr, rs_data, rt_addr, rt_data);
+
+        // read reg 63 and reg 0
+        rs_addr = 6'd63; rt_addr = 6'd0; #1;
+        $display("time=%0t rs_addr=%0d rs_data=%h rt_addr=%0d rt_data=%h", $time, rs_addr, rs_data, rt_addr, rt_data);
+
+        // Overwrite reg 10 and read immediately after next posedge
+        write_en = 1; rd_addr = 6'd10; data_in = 32'hCAFEBABE; @(posedge clk);
+        write_en = 0;
+        rs_addr = 6'd10; rt_addr = 6'd5; #1;
+        $display("time=%0t rs_addr=%0d rs_data=%h rt_addr=%0d rt_data=%h", $time, rs_addr, rs_data, rt_addr, rt_data);
+
+        #20;
+        $display("Register file testbench complete.");
+        $finish;
+    end
+endmodule

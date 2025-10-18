@@ -1,0 +1,48 @@
+// instruction_memory_tb.v
+`timescale 1ns/1ps
+
+module instruction_memory_tb;
+    reg clk = 0;
+    reg [31:0] addr;
+    wire [31:0] instr;
+
+    instruction_memory uut (
+        .clk(clk),
+        .addr(addr),
+        .instr(instr)
+    );
+
+    // 10 ns clock period
+    initial begin
+        clk = 0;
+        forever #5 clk = ~clk;
+    end
+
+    initial begin
+        $dumpfile("instruction_memory_tb.vcd");
+        $dumpvars(0, instruction_memory_tb);
+
+        // Read the first 6 instructions
+        addr = 0; @(posedge clk);
+        $display("time=%0t addr=%h instr=%h", $time, addr, instr);
+
+        addr = 4; @(posedge clk); // next word (byte address 4)
+        $display("time=%0t addr=%h instr=%h", $time, addr, instr);
+
+        addr = 8; @(posedge clk);
+        $display("time=%0t addr=%h instr=%h", $time, addr, instr);
+
+        addr = 12; @(posedge clk);
+        $display("time=%0t addr=%h instr=%h", $time, addr, instr);
+
+        addr = 16; @(posedge clk);
+        $display("time=%0t addr=%h instr=%h", $time, addr, instr);
+
+        addr = 100; @(posedge clk); // somewhere else (likely zero)
+        $display("time=%0t addr=%h instr=%h", $time, addr, instr);
+
+        #20;
+        $display("Instruction memory testbench complete.");
+        $finish;
+    end
+endmodule

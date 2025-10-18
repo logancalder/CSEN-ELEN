@@ -34,3 +34,4 @@ module fullAdder (
     assign cout = c[31];
 
 endmodule
+

@@ -60,3 +60,4 @@ module ALU (
     assign N = OUT[31];      // N = 1 iff OUT is negative (MSB set)
 
 endmodule
+

@@ -10,3 +10,6 @@ module twoToOne (
     // bitwise selection
     assign out = (sel ? negA : A);
 endmodule
+
+
+

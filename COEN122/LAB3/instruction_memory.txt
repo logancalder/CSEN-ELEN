@@ -1,0 +1,35 @@
+// instruction_memory.v
+// Instruction memory: 32-bit words, depth = 256 words.
+// Byte-addressable input address [31:0], we use addr[9:2] to index 256 words.
+// Reads the instruction on the rising edge of clock (sequential read).
+
+module instruction_memory (
+    input  wire        clk,
+    input  wire [31:0] addr,       // byte address
+    output reg  [31:0] instr       // current instruction at address
+);
+
+    // 256 x 32-bit memory
+    reg [31:0] mem [0:255];
+
+    // Hardcode some instructions in the design file (example values).
+    // In a real project you'd $readmemh or $readmemb in the testbench or here.
+    integer i;
+    initial begin
+        // Example (arbitrary) 32-bit words used as "instructions"
+        
+        mem[0] = 32'h20090003; // example: addi $t1, $zero, 3
+        mem[1] = 32'h01095020; // example: add $t2, $t0, $t1
+        mem[2] = 32'hAC0A0000; // example: sw $t2, 0($zero)
+        mem[3] = 32'h8C0B0000; // example: lw $t3, 0($zero)
+        // rest initialize to zero
+        for (i = 5; i < 256; i = i + 1) mem[i] = 32'h00000000;
+    end
+
+    // Sequential read: present instruction on posedge clk
+    // Word address selected from addr[9:2] (256 words)
+    always @(posedge clk) begin
+        instr <= mem[addr[9:2]];
+    end
+
+endmodule

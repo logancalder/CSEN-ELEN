@@ -1,0 +1,31 @@
+// data_memory.v
+// Data memory: 32-bit words, using lower 16 bits of address for indexing (65536 words).
+// Synchronous write and synchronous read (data_out is registered on posedge when read_en asserted).
+
+module data_memory (
+    input  wire         clk,
+    input  wire         write_en,
+    input  wire         read_en,
+    input  wire [31:0]  addr,       // use only addr[15:0]
+    input  wire [31:0]  data_in,
+    output reg  [31:0]  data_out
+);
+
+    // 65536 x 32-bit memory
+    reg [31:0] mem [0:65535];
+
+    integer i;
+    initial begin
+        // initialize memory to zero (optional)
+        for (i = 0; i < 65536; i = i + 1) mem[i] = 32'h00000000;
+    end
+
+    always @(posedge clk) begin
+        if (write_en) begin
+            mem[addr[15:0]] <= data_in;
+        end
+        if (read_en) begin
+            data_out <= mem[addr[15:0]];
+        end
+    end
+endmodule

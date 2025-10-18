@@ -1,0 +1,56 @@
+// data_memory_tb.v
+`timescale 1ns/1ps
+
+module data_memory_tb;
+    reg clk = 0;
+    reg write_en;
+    reg read_en;
+    reg [31:0] addr;
+    reg [31:0] data_in;
+    wire [31:0] data_out;
+
+    data_memory uut (
+        .clk(clk),
+        .write_en(write_en),
+        .read_en(read_en),
+        .addr(addr),
+        .data_in(data_in),
+        .data_out(data_out)
+    );
+
+    initial begin
+        clk = 0;
+        forever #5 clk = ~clk;
+    end
+
+    initial begin
+        $dumpfile("data_memory_tb.vcd");
+        $dumpvars(0, data_memory_tb);
+
+        // write 0x11111111 to address 0x0004
+        write_en = 1; read_en = 0;
+        addr = 32'h00000004; data_in = 32'h11111111; @(posedge clk);
+
+        // write 0x22222222 to address 0x0008
+        addr = 32'h00000008; data_in = 32'h22222222; @(posedge clk);
+
+        // disable writes and read back values
+        write_en = 0; read_en = 1;
+        addr = 32'h00000004; @(posedge clk);
+        $display("time=%0t read addr=%h data_out=%h", $time, addr, data_out);
+
+        addr = 32'h00000008; @(posedge clk);
+        $display("time=%0t read addr=%h data_out=%h", $time, addr, data_out);
+
+        // test write to high address (uses lower 16 bits)
+        write_en = 1; read_en = 0;
+        addr = 32'h0001_0004; data_in = 32'hDEADBEEF; @(posedge clk);
+
+        write_en = 0; read_en = 1; addr = 32'h0001_0004; @(posedge clk);
+        $display("time=%0t read addr=%h data_out=%h (should be DEADBEEF)", $time, addr, data_out);
+
+        #20;
+        $display("Data memory testbench complete.");
+        $finish;
+    end
+endmodule

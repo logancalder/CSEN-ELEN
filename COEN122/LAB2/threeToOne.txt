@@ -16,3 +16,6 @@ module threeToOne (
                  (sel == 2'b01) ? z :
                  (sel == 2'b10) ? negB : B;
 endmodule
+
+
+
