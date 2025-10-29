@@ -1,0 +1,68 @@
+ // id_ex.v
+// ID/EX pipeline buffer
+// Latches inputs on negedge of clk. Async active-high reset clears outputs.
+//
+// Inputs/Outputs are illustrative — include the signals you need for your datapath.
+// Expand as necessary for final project.
+
+module ID_EX (
+    input  wire        clk,
+    input  wire        rst,          // async active-high reset
+
+    // control signals from ID stage
+    input  wire        ctrl_RegWrite_in,
+    input  wire        ctrl_MemRead_in,
+    input  wire        ctrl_MemWrite_in,
+    input  wire [3:0]  ctrl_ALUop_in, // small ALU opcode encoding
+
+    // data from ID stage
+    input  wire [31:0] rs_data_in,
+    input  wire [31:0] rt_data_in,
+    input  wire [31:0] imm_in,
+    input  wire [4:0]  rd_in,         // destination reg (or rt/rd depending)
+    input  wire [4:0]  rs_in,
+    input  wire [4:0]  rt_in,
+
+    // outputs to EX stage
+    output reg         ctrl_RegWrite_out,
+    output reg         ctrl_MemRead_out,
+    output reg         ctrl_MemWrite_out,
+    output reg  [3:0]  ctrl_ALUop_out,
+
+    output reg  [31:0] rs_data_out,
+    output reg  [31:0] rt_data_out,
+    output reg  [31:0] imm_out,
+    output reg  [4:0]  rd_out,
+    output reg  [4:0]  rs_out,
+    output reg  [4:0]  rt_out
+);
+
+    always @(negedge clk or posedge rst) begin
+        if (rst) begin
+            ctrl_RegWrite_out <= 1'b0;
+            ctrl_MemRead_out  <= 1'b0;
+            ctrl_MemWrite_out <= 1'b0;
+            ctrl_ALUop_out    <= 4'b0;
+
+            rs_data_out <= 32'b0;
+            rt_data_out <= 32'b0;
+            imm_out     <= 32'b0;
+            rd_out      <= 5'b0;
+            rs_out      <= 5'b0;
+            rt_out      <= 5'b0;
+        end else begin
+            ctrl_RegWrite_out <= ctrl_RegWrite_in;
+            ctrl_MemRead_out  <= ctrl_MemRead_in;
+            ctrl_MemWrite_out <= ctrl_MemWrite_in;
+            ctrl_ALUop_out    <= ctrl_ALUop_in;
+
+            rs_data_out <= rs_data_in;
+            rt_data_out <= rt_data_in;
+            imm_out     <= imm_in;
+            rd_out      <= rd_in;
+            rs_out      <= rs_in;
+            rt_out      <= rt_in;
+        end
+    end
+
+endmodule

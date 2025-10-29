@@ -1,0 +1,206 @@
+// tb_pipeline_buffers.v
+// Testbench for IF/ID and ID/EX pipeline buffers
+// Demonstrates negedge capture and reset behavior.
+
+`timescale 1ns/1ps
+
+module tb_pipeline_buffers();
+
+    reg clk;
+    reg rst;
+
+    // IF/ID inputs
+    reg  [31:0] tb_pc_in;
+    reg  [31:0] tb_pc_plus4_in;
+    reg  [31:0] tb_instr_in;
+    reg         tb_valid_in;
+
+    wire [31:0] tb_pc_out;
+    wire [31:0] tb_pc_plus4_out;
+    wire [31:0] tb_instr_out;
+    wire        tb_valid_out;
+
+    // ID/EX inputs
+    reg         tb_ctrl_RegWrite_in;
+    reg         tb_ctrl_MemRead_in;
+    reg         tb_ctrl_MemWrite_in;
+    reg  [3:0]  tb_ctrl_ALUop_in;
+
+    reg  [31:0] tb_rs_data_in;
+    reg  [31:0] tb_rt_data_in;
+    reg  [31:0] tb_imm_in;
+    reg  [4:0]  tb_rd_in, tb_rs_in, tb_rt_in;
+
+    wire        tb_ctrl_RegWrite_out;
+    wire        tb_ctrl_MemRead_out;
+    wire        tb_ctrl_MemWrite_out;
+    wire [3:0]  tb_ctrl_ALUop_out;
+
+    wire [31:0] tb_rs_data_out;
+    wire [31:0] tb_rt_data_out;
+    wire [31:0] tb_imm_out;
+    wire [4:0]  tb_rd_out, tb_rs_out, tb_rt_out;
+
+    // instantiate modules
+    IF_ID dut_if_id (
+        .clk(clk),
+        .rst(rst),
+        .pc_in(tb_pc_in),
+        .pc_plus4_in(tb_pc_plus4_in),
+        .instr_in(tb_instr_in),
+        .valid_in(tb_valid_in),
+        .pc_out(tb_pc_out),
+        .pc_plus4_out(tb_pc_plus4_out),
+        .instr_out(tb_instr_out),
+        .valid_out(tb_valid_out)
+    );
+
+    ID_EX dut_id_ex (
+        .clk(clk),
+        .rst(rst),
+
+        .ctrl_RegWrite_in(tb_ctrl_RegWrite_in),
+        .ctrl_MemRead_in(tb_ctrl_MemRead_in),
+        .ctrl_MemWrite_in(tb_ctrl_MemWrite_in),
+        .ctrl_ALUop_in(tb_ctrl_ALUop_in),
+
+        .rs_data_in(tb_rs_data_in),
+        .rt_data_in(tb_rt_data_in),
+        .imm_in(tb_imm_in),
+        .rd_in(tb_rd_in),
+        .rs_in(tb_rs_in),
+        .rt_in(tb_rt_in),
+
+        .ctrl_RegWrite_out(tb_ctrl_RegWrite_out),
+        .ctrl_MemRead_out(tb_ctrl_MemRead_out),
+        .ctrl_MemWrite_out(tb_ctrl_MemWrite_out),
+        .ctrl_ALUop_out(tb_ctrl_ALUop_out),
+
+        .rs_data_out(tb_rs_data_out),
+        .rt_data_out(tb_rt_data_out),
+        .imm_out(tb_imm_out),
+        .rd_out(tb_rd_out),
+        .rs_out(tb_rs_out),
+        .rt_out(tb_rt_out)
+    );
+
+    // Clock: 10 ns period
+    initial begin
+        clk = 1'b1; // start high
+        forever #5 clk = ~clk; // toggle every 5ns -> 10ns period
+    end
+
+    integer i;
+    initial begin
+        // waveform dump for iverilog+gtkwave
+        $dumpfile("tb_pipeline_buffers.vcd");
+        $dumpvars(0, tb_pipeline_buffers);
+
+        // initialize signals
+        rst = 1'b1;
+        tb_pc_in = 32'h0000_0000;
+        tb_pc_plus4_in = 32'h0000_0004;
+        tb_instr_in = 32'h0000_0000;
+        tb_valid_in = 1'b0;
+
+        tb_ctrl_RegWrite_in = 1'b0;
+        tb_ctrl_MemRead_in  = 1'b0;
+        tb_ctrl_MemWrite_in = 1'b0;
+        tb_ctrl_ALUop_in    = 4'b0;
+        tb_rs_data_in = 32'h0000_0000;
+        tb_rt_data_in = 32'h0000_0000;
+        tb_imm_in     = 32'h0000_0000;
+        tb_rd_in = 5'd0; tb_rs_in = 5'd0; tb_rt_in = 5'd0;
+
+        // hold reset for a couple cycles
+        #12; // 12 ns (spans posedge/negedge)
+        rst = 1'b0;
+        $display("[%0t] Release reset", $time);
+
+        // At this point, buffers will capture on the next negedge
+        // Drive a valid instruction into IF/ID
+        tb_pc_in = 32'h0000_0010;
+        tb_pc_plus4_in = 32'h0000_0014;
+        tb_instr_in = 32'hA5A5_A5A5; // test pattern
+        tb_valid_in = 1'b1;
+
+        // Drive some ID/EX signals
+        tb_ctrl_RegWrite_in = 1'b1;
+        tb_ctrl_MemRead_in  = 1'b0;
+        tb_ctrl_MemWrite_in = 1'b0;
+        tb_ctrl_ALUop_in    = 4'h3;
+
+        tb_rs_data_in = 32'hDEAD_BEEF;
+        tb_rt_data_in = 32'hCAFEBABE;
+        tb_imm_in     = 32'h0000_0100;
+        tb_rd_in      = 5'd10;
+        tb_rs_in      = 5'd1;
+        tb_rt_in      = 5'd2;
+
+        // Wait until after a negative edge so the buffers capture values
+        #7; // ensure we cross a negedge (clock toggles at multiples of 5)
+        @(negedge clk);
+        #1;
+        $display("[%0t] After 1st negedge capture:", $time);
+        $display(" IF/ID pc_out = 0x%08h, pc+4_out = 0x%08h, instr_out = 0x%08h, valid = %b",
+                 tb_pc_out, tb_pc_plus4_out, tb_instr_out, tb_valid_out);
+
+        $display(" ID/EX ctrl_RegWrite_out=%b ctrl_MemRead_out=%b ctrl_ALUop_out=0x%h",
+                 tb_ctrl_RegWrite_out, tb_ctrl_MemRead_out, tb_ctrl_ALUop_out);
+        $display(" ID/EX rs_data_out=0x%08h rt_data_out=0x%08h imm_out=0x%08h rd_out=%0d",
+                 tb_rs_data_out, tb_rt_data_out, tb_imm_out, tb_rd_out);
+
+        // Change inputs to different values to demonstrate latching (should not appear on outputs until next negedge)
+        tb_pc_in = 32'h0000_0020;
+        tb_pc_plus4_in = 32'h0000_0024;
+        tb_instr_in = 32'h5A5A_5A5A;
+        tb_valid_in = 1'b1;
+
+        tb_ctrl_RegWrite_in = 1'b0;
+        tb_ctrl_MemRead_in  = 1'b1;
+        tb_ctrl_MemWrite_in = 1'b1;
+        tb_ctrl_ALUop_in    = 4'hA;
+
+        tb_rs_data_in = 32'h1111_2222;
+        tb_rt_data_in = 32'h3333_4444;
+        tb_imm_in     = 32'h0000_0200;
+        tb_rd_in      = 5'd11;
+        tb_rs_in      = 5'd3;
+        tb_rt_in      = 5'd4;
+
+        // Wait and capture on next negedge
+        #12;
+        @(negedge clk);
+        #1;
+        $display("[%0t] After 2nd negedge capture:", $time);
+        $display(" IF/ID pc_out = 0x%08h, pc+4_out = 0x%08h, instr_out = 0x%08h, valid = %b",
+                 tb_pc_out, tb_pc_plus4_out, tb_instr_out, tb_valid_out);
+
+        $display(" ID/EX ctrl_RegWrite_out=%b ctrl_MemRead_out=%b ctrl_ALUop_out=0x%h",
+                 tb_ctrl_RegWrite_out, tb_ctrl_MemRead_out, tb_ctrl_ALUop_out);
+        $display(" ID/EX rs_data_out=0x%08h rt_data_out=0x%08h imm_out=0x%08h rd_out=%0d",
+                 tb_rs_data_out, tb_rt_data_out, tb_imm_out, tb_rd_out);
+
+        // Assert reset in mid operation to show clearing
+        #10;
+        rst = 1'b1;
+        #6;
+        $display("[%0t] Asserted reset", $time);
+        #2;
+        rst = 1'b0;
+        #5;
+        @(negedge clk);
+        #1;
+        $display("[%0t] After reset and next negedge:", $time);
+        $display(" IF/ID pc_out = 0x%08h, instr_out = 0x%08h, valid = %b",
+                 tb_pc_out, tb_instr_out, tb_valid_out);
+        $display(" ID/EX rs_data_out=0x%08h ctrl_RegWrite_out=%b",
+                 tb_rs_data_out, tb_ctrl_RegWrite_out);
+
+        $display("[%0t] Testbench complete", $time);
+        #10;
+        $finish;
+    end
+
+endmodule
+

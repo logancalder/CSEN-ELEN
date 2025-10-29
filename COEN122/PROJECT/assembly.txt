@@ -1,0 +1,129 @@
+// ============================================================================
+// 1-D Median Stencil Program for SCU ISA
+// ============================================================================
+// ASSUMPTIONS:
+// - x1 contains n (number of elements in arrays)
+// - x2 contains base address of array a (&a[0])
+// - x3 contains base address of array b (&b[0])
+// - x0 is initialized to 0 (zero register): SUB x0, x0, x0
+// - Arrays use word addressing (each address increment = one 32-bit word)
+//
+// ALGORITHM:
+// 1. Handle boundary: b[0] = a[0]
+// 2. Loop through i = 1 to n-2, computing b[i] = median(a[i-1], a[i], a[i+1])
+// 3. Handle boundary: b[n-1] = a[n-1]
+//
+// MEDIAN LOGIC:
+// median(x, y, z) can be computed as:
+//   - Sort three values
+//   - Return middle value
+// We use comparison-based sorting to find the median
+// ============================================================================
+
+// Initialize x0 as zero register
+SUB x0, x0, x0              // x0 = 0
+
+// ============================================================================
+// STEP 1: Handle boundary condition b[0] = a[0]
+// ============================================================================
+LD x10, x2, 0               // x10 = a[0] (load from address x2 + 0)
+ST x10, x3, 0               // b[0] = x10 (store to address x3 + 0)
+
+// ============================================================================
+// STEP 2: Initialize loop counter and constants
+// ============================================================================
+INC x4, x0, 1               // x4 = 1 (loop index i, starts at 1)
+INC x5, x1, -2              // x5 = n - 2 (loop end condition)
+INC x6, x0, 1               // x6 = 1 (constant for increment)
+
+// Check if n <= 2 (skip main loop if array too small)
+SUB x20, x5, x0             // x20 = n - 2
+SVPC x21, 1                 // x21 = address of next instruction
+BRN x21                     // if n-2 < 0, skip to boundary handling
+
+// ============================================================================
+// STEP 3: Main loop - compute median for i = 1 to n-2
+// ============================================================================
+LOOP_START:
+    // Load three consecutive elements: a[i-1], a[i], a[i+1]
+    INC x7, x4, -1          // x7 = i - 1
+    LD x11, x2, 0           // Base: Load a[i-1] using x2 + (i-1)
+    // Note: Need to compute actual address
+    ADD x8, x2, x7          // x8 = &a[0] + (i-1) = &a[i-1]
+    LD x11, x8, 0           // x11 = a[i-1]
+    
+    ADD x8, x2, x4          // x8 = &a[0] + i = &a[i]
+    LD x12, x8, 0           // x12 = a[i]
+    
+    INC x7, x4, 1           // x7 = i + 1
+    ADD x8, x2, x7          // x8 = &a[0] + (i+1) = &a[i+1]
+    LD x13, x8, 0           // x13 = a[i+1]
+    
+    // ========================================================================
+    // MEDIAN COMPUTATION: median(x11, x12, x13)
+    // Strategy: Use sorting network to find median
+    // After sorting, middle value is the median
+    // ========================================================================
+    
+    // Compare and swap: ensure x11 <= x12
+    SUB x20, x11, x12       // x20 = x11 - x12
+    SVPC x21, 3             // x21 = address after swap block
+    BRN x21                 // if x11 < x12, skip swap (already ordered)
+    // Swap x11 and x12
+    ADD x20, x11, x0        // x20 = x11 (temp)
+    ADD x11, x12, x0        // x11 = x12
+    ADD x12, x20, x0        // x12 = temp (original x11)
+    
+    // Compare and swap: ensure x12 <= x13
+    SUB x20, x12, x13       // x20 = x12 - x13
+    SVPC x21, 3             // x21 = address after swap block
+    BRN x21                 // if x12 < x13, skip swap
+    // Swap x12 and x13
+    ADD x20, x12, x0        // x20 = x12 (temp)
+    ADD x12, x13, x0        // x12 = x13
+    ADD x13, x20, x0        // x13 = temp (original x12)
+    
+    // Compare and swap again: ensure x11 <= x12
+    SUB x20, x11, x12       // x20 = x11 - x12
+    SVPC x21, 3             // x21 = address after swap block
+    BRN x21                 // if x11 < x12, skip swap
+    // Swap x11 and x12
+    ADD x20, x11, x0        // x20 = x11 (temp)
+    ADD x11, x12, x0        // x11 = x12
+    ADD x12, x20, x0        // x12 = temp (original x11)
+    
+    // Now x11 <= x12 <= x13, so x12 is the median
+    
+    // Store median to b[i]
+    ADD x8, x3, x4          // x8 = &b[0] + i = &b[i]
+    ST x12, x8, 0           // b[i] = median (x12)
+    
+    // ========================================================================
+    // Loop control: increment i and check if done
+    // ========================================================================
+    ADD x4, x4, x6          // x4 = i + 1 (increment loop counter)
+    SUB x20, x4, x5         // x20 = i - (n-2)
+    SVPC x21, 2             // x21 = address of instruction after next
+    BRZ x21                 // if i == n-2, exit loop (go to boundary)
+    SVPC x22, -50           // x22 = address of LOOP_START (adjust offset)
+    J x22                   // Jump back to LOOP_START
+    SVPC x21, 1             // Skip to boundary condition
+    J x21                   // Jump to boundary handling
+
+// ============================================================================
+// STEP 4: Handle boundary condition b[n-1] = a[n-1]
+// ============================================================================
+BOUNDARY_END:
+INC x7, x1, -1              // x7 = n - 1
+ADD x8, x2, x7              // x8 = &a[0] + (n-1) = &a[n-1]
+LD x10, x8, 0               // x10 = a[n-1]
+ADD x8, x3, x7              // x8 = &b[0] + (n-1) = &b[n-1]
+ST x10, x8, 0               // b[n-1] = a[n-1]
+
+// ============================================================================
+// STEP 5: End program
+// ============================================================================
+HALT:
+NOP                         // Program complete
+NOP                         // Additional NOP for safety
+// End of program

@@ -1,0 +1,48 @@
+// if_id.v
+// IF/ID pipeline buffer
+// Latches inputs on negedge of clk (as recommended in lab slides).
+// Async active-high reset clears outputs.
+//
+// Inputs:
+//  - clk, rst
+//  - pc_in      : PC of fetched instruction
+//  - pc_plus4_in: PC+4 (useful for branch calculation later)
+//  - instr_in   : 32-bit instruction fetched
+//  - valid_in   : instruction valid (for bubbles / stalls; optional)
+//
+// Outputs:
+//  - pc_out, pc_plus4_out, instr_out, valid_out
+//
+// Compatible with Vivado / Icarus Verilog.
+
+module IF_ID (
+    input  wire        clk,
+    input  wire        rst,         // async active-high reset
+    input  wire [31:0] pc_in,
+    input  wire [31:0] pc_plus4_in,
+    input  wire [31:0] instr_in,
+    input  wire        valid_in,    // 1 = valid instruction, 0 = bubble
+    output reg  [31:0] pc_out,
+    output reg  [31:0] pc_plus4_out,
+    output reg  [31:0] instr_out,
+    output reg         valid_out
+);
+
+    // Latch on negedge clock (buffers opposite edge of functional units per slides).
+    always @(negedge clk or posedge rst) begin
+        if (rst) begin
+            pc_out       <= 32'b0;
+            pc_plus4_out <= 32'b0;
+            instr_out    <= 32'b0;
+            valid_out    <= 1'b0;
+        end else begin
+            // On normal negedge, capture inputs
+            pc_out       <= pc_in;
+            pc_plus4_out <= pc_plus4_in;
+            instr_out    <= instr_in;
+            valid_out    <= valid_in;
+        end
+    end
+
+endmodule
+
